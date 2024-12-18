@@ -31,11 +31,12 @@ USE WideWorldImporters
    Сравните производительность запросов 1 и 2 с помощью set statistics time, io on
 */
 
-select si.InvoiceID, ap.FullName, si.InvoiceDate, sil.ExtendedPrice, sum(sil.ExtendedPrice) over (partition by si.InvoiceDate order by si.InvoiceDate asc)
+select si.InvoiceID, ap.FullName, si.InvoiceDate, sil.ExtendedPrice, sum(sil.ExtendedPrice) over (partition by month(si.InvoiceDate), year(si.invoicedate))
 from sales.Invoices si
 join sales.InvoiceLines sil on sil.InvoiceID = si.InvoiceID
 join Application.People ap on ap.PersonID = si.CustomerID
 where si.InvoiceDate between '2015-01-01' and getdate()
+order by si.InvoiceDate asc
 
 /*
 3. Вывести список 2х самых популярных продуктов (по количеству проданных) 
