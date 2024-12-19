@@ -31,7 +31,7 @@ USE WideWorldImporters
    Сравните производительность запросов 1 и 2 с помощью set statistics time, io on
 */
 
-select si.InvoiceID, ap.FullName, si.InvoiceDate, sil.ExtendedPrice, sum(sil.ExtendedPrice) over (partition by month(si.InvoiceDate), year(si.invoicedate))
+select si.InvoiceID, ap.FullName, si.InvoiceDate, sil.ExtendedPrice, sum(sil.ExtendedPrice) over (order by month(si.InvoiceDate), year(si.invoicedate)) as sd
 from sales.Invoices si
 join sales.InvoiceLines sil on sil.InvoiceID = si.InvoiceID
 join Application.People ap on ap.PersonID = si.CustomerID
