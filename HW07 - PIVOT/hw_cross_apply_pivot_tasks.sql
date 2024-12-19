@@ -25,7 +25,7 @@ InvoiceMonth | Peeples Valley, AZ | Medicine Lodge, KS | Gasport, NY | Sylvanite
 -------------+--------------------+--------------------+-------------+--------------+------------
 */
 
-select indate 
+select format(indate, 'dd.MM.yyyy') as InvoiceMonth
       ,[Sylvanite, MT] 
 	  ,[Peeples Valley, AZ] 
 	  ,[Medicine Lodge, KS] 
