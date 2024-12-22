@@ -102,14 +102,12 @@ code for columnname in (txtcode, numcode)
 
 -- в задании не указано, что вывести нужно 2 уникальных товара и самую последнюю дату продажи, если один и тот же товар куплен одним и тем же клиентом несколько раз
 
-WITH OrdersFoCustomer AS (
-	select sol.StockItemID, sol.UnitPrice, ap.FullName, ap.PersonID, so.OrderDate
+select ap.PersonID, ap.FullName, a.StockItemID, a.UnitPrice, a.OrderDate
+from Application.People ap
+cross apply (select sol.StockItemID, sol.UnitPrice, so.OrderDate
 		, dense_rank() over (partition by ap.PersonID order by sol.UnitPrice desc) as b
 	from sales.Orders so
 	join sales.OrderLines sol on so.OrderID = sol.OrderID
-	join Application.People ap on ap.PersonID = so.CustomerID
-)
-
-select PersonID, FullName, StockItemID, UnitPrice, OrderDate
-from OrdersFoCustomer
-where b <= 2
+	where ap.PersonID = so.CustomerID) a
+where a.b <= 2
+order by ap.PersonID asc
