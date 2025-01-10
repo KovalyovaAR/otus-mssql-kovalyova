@@ -267,6 +267,8 @@ WHEN NOT MATCHED BY SOURCE
 5. Напишите запрос, который выгрузит данные через bcp out и загрузить через bulk insert
 */
 
+-- из таблицы в файл
 bcp WideWorldImporters.Warehouse.Colors out ".\otus\color.txt" -c -T
 
+-- из файла в таблицу
 bcp WideWorldImporters.Warehouse.Colors_copy in ".\otus\color.txt" -c -T
