@@ -219,10 +219,54 @@ where CustomerID = 1729
 4. Написать MERGE, который вставит запись в клиенты, если ее там нет, и изменит если она уже есть
 */
 
-напишите здесь свое решение
+MERGE sales.customers_copy AS Target
+USING sales.Customers AS Source
+    ON (Target.CustomerID = Source.CustomerID)
+WHEN MATCHED 
+    THEN UPDATE 
+        SET Customername = Source.Customername
+WHEN NOT MATCHED 
+    THEN INSERT 
+        VALUES (Source.CustomerID, 
+				Source.Customername, 
+				Source.[BillToCustomerID],
+				Source.[CustomerCategoryID],
+				Source.[BuyingGroupID],
+				Source.[PrimaryContactPersonID],
+				Source.[AlternateContactPersonID],
+				Source.[DeliveryMethodID],
+				Source.[DeliveryCityID],
+				Source.[PostalCityID],
+				Source.[CreditLimit],
+				Source.[AccountOpenedDate],
+				Source.[StandardDiscountPercentage],
+				Source.[IsStatementSent],
+				Source.[IsOnCreditHold],
+				Source.[PaymentDays],
+				Source.[PhoneNumber],
+				Source.[FaxNumber],
+				Source.[DeliveryRun],
+				Source.[RunPosition],
+				Source.[WebsiteURL],
+				Source.[DeliveryAddressLine1],
+				Source.[DeliveryAddressLine2],
+				Source.[DeliveryPostalCode],
+				Source.[DeliveryLocation],
+				Source.[PostalAddressLine1],
+				Source.[PostalAddressLine2],
+				Source.[PostalPostalCode],
+				Source.[LastEditedBy],
+				Source.[ValidFrom],
+				Source.[ValidTo]
+				)
+WHEN NOT MATCHED BY SOURCE
+    THEN 
+        DELETE
 
 /*
 5. Напишите запрос, который выгрузит данные через bcp out и загрузить через bulk insert
 */
 
-напишите здесь свое решение
+bcp WideWorldImporters.Warehouse.Colors out ".\otus\color.txt" -c -T
+
+bcp WideWorldImporters.Warehouse.Colors_copy in ".\otus\color.txt" -c -T
